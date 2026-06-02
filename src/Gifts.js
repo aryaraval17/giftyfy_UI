@@ -1,7 +1,16 @@
-import React from "react";
-import 'bootstrap/dist/css/bootstrap.min.css';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function Gifts() {
+  const [gifts, setGifts] = useState([]);
+
+  useEffect(() => {
+    axios.get("http://localhost:5000/api/gift")
+      .then(res => setGifts(res.data))
+      .catch(err => console.error(err));
+  }, []);
+
   return (
     <div className="bg-light min-vh-100">
       <header className="bg-white shadow-sm py-5 text-center">
@@ -14,69 +23,23 @@ function Gifts() {
       <section className="py-5">
         <div className="container">
           <div className="row g-4">
-            <div className="col-sm-6 col-md-3">
-              <div className="card h-100 shadow-sm">
-                <img
-                  src="https://static.vecteezy.com/system/resources/thumbnails/051/741/735/small/luxury-wrist-watches-on-display-in-retail-store-window-photo.jpg"
-                  className="card-img-top"
-                  alt="Gift 1"
-                  style={{ height: "250px", objectFit: "cover" }}
-                />
-                <div className="card-body text-center">
-                  <h5 className="card-title">Gift 1</h5>
-                  <p className="text-muted">Perfect for any occasion.</p>
-                  <button className="btn btn-outline-primary">Buy Now</button>
+            {gifts.map((gift) => (
+              <div key={gift._id} className="col-sm-6 col-md-3">
+                <div className="card h-100 shadow-sm">
+                  <img
+                    src={`http://localhost:5000/uploads/${gift.image}`}
+                    className="card-img-top"
+                    alt={gift.giftName}
+                    style={{ height: "250px", objectFit: "cover" }}
+                  />
+                  <div className="card-body text-center">
+                    <h5 className="card-title">{gift.giftName}</h5>
+                    <p className="text-muted">₹{gift.price}</p>
+                    <button className="btn btn-outline-primary">Buy Now</button>
+                  </div>
                 </div>
               </div>
-            </div>
-
-            <div className="col-sm-6 col-md-3">
-              <div className="card h-100 shadow-sm">
-                <img
-                  src="https://www.themancompany.com/cdn/shop/files/Gentlemen_s_Moods_c3bbcec6-cde8-42c2-80cb-08b603eb4c14.jpg?v=1769668902"
-                  className="card-img-top"
-                  alt="Gift 2"
-                  style={{ height: "250px", objectFit: "cover" }}
-                />
-                <div className="card-body text-center">
-                  <h5 className="card-title">Gift 2</h5>
-                  <p className="text-muted">Perfect for any occasion.</p>
-                  <button className="btn btn-outline-primary">Buy Now</button>
-                </div>
-              </div>
-            </div>
-
-            <div className="col-sm-6 col-md-3">
-              <div className="card h-100 shadow-sm">
-                <img
-                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtcCc-ywfuhrFD_UuLfknxgrFcXg3U_r7Llg&s"
-                  className="card-img-top"
-                  alt="Gift 3"
-                  style={{ height: "250px", objectFit: "cover" }}
-                />
-                <div className="card-body text-center">
-                  <h5 className="card-title">Gift 3</h5>
-                  <p className="text-muted">Perfect for any occasion.</p>
-                  <button className="btn btn-outline-primary">Buy Now</button>
-                </div>
-              </div>
-            </div>
-
-            <div className="col-sm-6 col-md-3">
-              <div className="card h-100 shadow-sm">
-                <img
-                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQMAHGSYIfRenEtCUsGpYPaJPF9xd7LwKCzIA&s"
-                  className="card-img-top"
-                  alt="Gift 4"
-                  style={{ height: "250px", objectFit: "cover" }}
-                />
-                <div className="card-body text-center">
-                  <h5 className="card-title">Gift 4</h5>
-                  <p className="text-muted">Perfect for any occasion.</p>
-                  <button className="btn btn-outline-primary">Buy Now</button>
-                </div>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
